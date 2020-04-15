@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Kalendarz</string>
+    <string name="add_activity_header">JUST PLAN IT!</string>
+    <string name="add_activity_opis_label">Content:</string>
+    <string name="activity_add_date_label">Date:</string>
+    <string name="activity_add_date_button">Set date</string>
+    <string name="activity_add_notify_label">Notify:</string>
+    <string name="activity_add_notify_date_label">Date:</string>
+    <string name="activity_add_notify_date_button">Set date</string>
+    <string name="notify_radio_1_label">Yes</string>
+    <string name="notify_radio_2_label">No</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="datePicker">datePicker</string>
+    <string name="dots">…</string>
+    <string name="None">None</string>
+    <string name="add_task_button_label">CREATE</string>
+    <string name="timePicker">timePicker</string>
+    <string name="fab_label">Add new event</string>
+    <string name="adder_from_label">From:</string>
+    <string name="adder_from_button_label">from</string>
+    <string name="adder_to_label">To:</string>
+    <string name="adder_to_button_label">TIME</string>
+</resources>

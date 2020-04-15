@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <item name="android:actionBarStyle">@style/myActionBarStyle</item>
+    </style>
+
+
+    <style name="TextButton" parent="">
+            <item name="android:textColor">@color/secondaryColor</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="myActionBarStyle" parent="android:Widget.ActionBar">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>
