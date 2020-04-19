@@ -1,6 +1,5 @@
 package com.example.kalendarz.common;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.kalendarz.R;
-import io.realm.RealmChangeListener;
+import com.example.kalendarz.utils.DateFormatter;
 import io.realm.RealmResults;
 
 import java.util.Calendar;
@@ -18,10 +17,10 @@ import java.util.Date;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
 
-    private final RealmResults<Event> mEventList;
+    public  RealmResults<Event> mEventList;
     private LayoutInflater mInflater;
 
-    private final static String TIME_RANGE_FORMAT = "%d:%d - %d:%d";
+    private final static String TIME_RANGE_FORMAT = "%s - %s";
 
     public EventListAdapter(Context context, RealmResults<Event> eventList) {
         mInflater = LayoutInflater.from(context);
@@ -39,7 +38,16 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event mEventForCurrentRow = mEventList.get(position);
         holder.contentView.setText(mEventForCurrentRow.getContent());
-        holder.timeRangeView.setText(formatTimeRange(mEventForCurrentRow.getDate(), mEventForCurrentRow.getEndDate()));
+
+        String formatedTime = formatTimeRange(mEventForCurrentRow.getDate(), mEventForCurrentRow.getEndDate());
+
+        if (formatedTime != null) {
+            holder.timeRangeView.setText(formatedTime);
+        } else {
+            holder.timeRangeView.setText(R.string.default_time);
+            holder.timeRangeView.setVisibility(View.INVISIBLE);
+        }
+
         holder.eventCheckBox.setChecked(false);
     }
 
@@ -50,17 +58,22 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             int startHour = c.get(Calendar.HOUR_OF_DAY);
             int startMin = c.get(Calendar.MINUTE);
             c.setTime(endDate);
-            int endHours = c.get(Calendar.HOUR_OF_DAY);
+            int endHour = c.get(Calendar.HOUR_OF_DAY);
             int endMin = c.get(Calendar.MINUTE);
-            return String.format(TIME_RANGE_FORMAT, startHour, startMin, endHours, endMin);
+            return String.format(TIME_RANGE_FORMAT, DateFormatter.formatTimeHHMM(startHour,startMin), DateFormatter.formatTimeHHMM(endHour,endMin));
         } else {
-            return "";
+            return null;
         }
     }
 
     @Override
     public int getItemCount() {
         return mEventList.size();
+    }
+
+    public void updateData(RealmResults<Event> events) {
+        mEventList = events;
+        notifyDataSetChanged();
     }
 
     class EventViewHolder extends RecyclerView.ViewHolder {

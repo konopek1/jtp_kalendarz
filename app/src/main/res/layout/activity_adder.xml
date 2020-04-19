@@ -47,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@+id/activity_add_opis_input"
             android:layout_marginTop="36dp"/>
     <TextView
-            android:text="date"
+            android:text="@string/date_button_label"
             android:layout_width="wrap_content"
             style="@style/TextButton"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
@@ -57,14 +57,16 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/activity_add_date_label"
             android:layout_marginLeft="@dimen/big_padding"
             android:onClick="chooseDate"
-            android:layout_marginStart="@dimen/big_padding"/>
+            android:paddingRight="@dimen/small_padding"
+            android:layout_marginStart="@dimen/big_padding" android:paddingEnd="@dimen/small_padding"/>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
               android:id="@+id/date_from_label"
               app:layout_constraintTop_toBottomOf="@+id/activity_add_date_label"
               android:layout_marginLeft="@dimen/big_padding"
               android:textColor="@color/primaryColor"
               android:layout_marginTop="@dimen/big_padding"
-              android:text="@string/adder_from_label" app:layout_constraintStart_toStartOf="parent"/>
+              android:text="@string/adder_from_label" app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginStart="@dimen/big_padding"/>
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:id="@+id/view_group_time"
                   app:layout_constraintTop_toBottomOf="@id/activity_add_date_textView"
@@ -91,10 +93,7 @@
                   android:onClick="chooseTime"
                   android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
                   android:id="@+id/date_to"
-                  android:padding="0dp" android:paddingLeft="0dp"
-                  android:paddingTop="0dp"
-                  android:paddingRight="0dp"
-                  android:paddingBottom="0dp" android:layout_marginStart="@dimen/big_padding"/>
+                  android:layout_marginStart="@dimen/big_padding"/>
     </LinearLayout>
     <TextView
             android:text="@string/activity_add_notify_label"
@@ -136,11 +135,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/textView4"
             android:id="@+id/notify_date_layout"
-            android:layout_marginLeft="@dimen/big_padding"
-            android:layout_marginTop="@dimen/big_padding"
+            android:layout_marginLeft="@dimen/tabbed_pading"
+            android:layout_marginTop="@dimen/small_padding"
             android:visibility="gone"
             android:animateLayoutChanges="true"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="@dimen/tabbed_pading">
         <TextView
                 android:text="@string/activity_add_notify_date_label"
                 android:layout_width="wrap_content"
@@ -179,7 +178,7 @@
             android:id="@+id/add_task"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            android:onClick="creatEvent"
+            android:onClick="onCreateButtonClick"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup"
             android:layout_marginTop="32dp"
             app:layout_constraintBottom_toBottomOf="parent"

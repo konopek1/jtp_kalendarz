@@ -19,7 +19,10 @@
     <string name="timePicker">timePicker</string>
     <string name="fab_label">Add new event</string>
     <string name="adder_from_label">From:</string>
-    <string name="adder_from_button_label">from</string>
+    <string name="adder_from_button_label">pick</string>
     <string name="adder_to_label">To:</string>
-    <string name="adder_to_button_label">TIME</string>
+    <string name="adder_to_button_label">pick</string>
+    <string name="date_button_label">pick</string>
+    <string name="default_time">00:00 - 00:00</string>
+    <string name="default_time">00:00 - 00:00</string>
 </resources>

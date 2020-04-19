@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:padding="12dp"
-              android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="@dimen/small_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:textStyle="bold"
+              android:text="@string/default_time"
+              android:layout_marginLeft="@dimen/small_padding"
+              android:textAppearance="@style/Widget.MaterialComponents.Button.OutlinedButton"
+              android:textSize="12sp"
               android:id="@+id/eventTimeRange"
-    />
-    <TextView android:layout_width="wrap_content"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="@dimen/small_padding"/>
+    <TextView android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="@dimen/big_padding"
+              android:text="tresccccccccccccccccdasdasfsdfsdfsdfdcc"
+              android:scrollHorizontally="false"
+              android:layout_marginLeft="@dimen/small_padding"
+              android:textColor="@android:color/black"
+              android:maxLines="5"
               android:id="@+id/eventContent"
-              android:layout_marginStart="@dimen/big_padding"/>
+              app:layout_constraintEnd_toStartOf="@+id/textView3" app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@+id/eventTimeRange"
+              android:layout_marginStart="@dimen/small_padding"/>
+
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="@dimen/big_padding"
-              android:layout_marginStart="@dimen/big_padding"
-    />
+              android:text="edit"
+              android:layout_marginLeft="@dimen/small_padding"
+              style="@style/TextButton"
+              android:id="@+id/textView3"
+              android:layout_marginRight="@dimen/small_padding"
+              app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toStartOf="@+id/eventCheckBox" android:layout_marginEnd="@dimen/small_padding"/>
     <CheckBox android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="@dimen/big_padding"
+              android:layout_marginRight="@dimen/small_padding"
               android:id="@+id/eventCheckBox"
-              android:layout_marginStart="@dimen/big_padding"/>
+              app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="@dimen/small_padding"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</LinearLayout>

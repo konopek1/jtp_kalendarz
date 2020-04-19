@@ -1,6 +1,7 @@
 package com.example.kalendarz.common;
 
 import androidx.test.runner.AndroidJUnit4;
+import com.example.kalendarz.DAO.EventDAO;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
@@ -17,12 +18,14 @@ import static org.junit.Assert.assertThat;
 public class EventAndroidTest {
     private Realm realm;
     private EventFabric eventFabric;
+    private EventDAO eventDAO;
 
 
     @Before
     public void setUp() {
         Realm.init(getTargetContext());
         RealmConfiguration config = new RealmConfiguration.Builder().inMemory().name("test.realm").build();
+        eventDAO = EventDAO.getInstance();
 
         eventFabric = new EventFabric();
 
@@ -37,8 +40,8 @@ public class EventAndroidTest {
     @Test
     public void save() {
         Event event = eventFabric.produceEvent();
-
-        event.save(realm);
+        
+        eventDAO.save(realm,event);
 
         RealmQuery<Event> query = realm.where(Event.class);
         Event retriveEvent = query.findAll().last();
@@ -48,19 +51,21 @@ public class EventAndroidTest {
 
     @Test
     public void shouldReturnAllEvents() {
-        final int eventSize = 10;
+        final int eventCount = 10;
         Event event;
 
         realm.beginTransaction();
-        for(int i =0; i <eventSize; i++) {
+        for(int i =0; i <eventCount; i++) {
+
             event = eventFabric.produceEvent();
             realm.insert(event);
         }
         realm.commitTransaction();
 
-        RealmResults<Event> retriveEvents =  Event.getAllEvents(realm);
+        RealmResults<Event> retriveEvents =  eventDAO.getAllEvents(realm);
 
-        assertEquals(eventSize,retriveEvents.size());
+        assertEquals(eventCount,retriveEvents.size());
     }
+
 }
 

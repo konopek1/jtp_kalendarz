@@ -35,6 +35,7 @@ public class Event extends RealmObject {
     public Event(String opis, Date date, Date endDate, boolean useNotification) {
         this.content = opis;
         this.date = date;
+        this.endDate = endDate;
         this.useNotification = useNotification;
         this.id = getId();
         this.isDone = false;
@@ -45,17 +46,6 @@ public class Event extends RealmObject {
         long endTimestamp = date.getTime();
         long opisHashed = content.hashCode();
         return startTimestamp + endTimestamp + opisHashed;
-    }
-
-    public void save(@NotNull Realm realm) {
-        realm.beginTransaction();
-        realm.insert(this);
-        realm.commitTransaction();
-    }
-
-    public static RealmResults<Event> getAllEvents(@NotNull Realm realm) {
-        RealmQuery<Event> query = realm.where(Event.class);
-        return query.findAll();
     }
 
     public String getContent() {
