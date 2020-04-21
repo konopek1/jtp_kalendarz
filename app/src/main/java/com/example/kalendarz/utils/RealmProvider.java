@@ -7,6 +7,7 @@ public  class RealmProvider {
     private final static RealmConfiguration config = new RealmConfiguration
             .Builder()
             .schemaVersion(R.integer.SCHEMA_VERSION)
+            .deleteRealmIfMigrationNeeded()
             .build();
 
     private RealmProvider() {

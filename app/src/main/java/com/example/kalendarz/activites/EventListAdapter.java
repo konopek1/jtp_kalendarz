@@ -1,4 +1,4 @@
-package com.example.kalendarz.common;
+package com.example.kalendarz.activites;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.kalendarz.R;
+import com.example.kalendarz.common.Event;
 import com.example.kalendarz.utils.DateFormatter;
 import io.realm.RealmResults;
 
@@ -38,21 +39,22 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event mEventForCurrentRow = mEventList.get(position);
         holder.contentView.setText(mEventForCurrentRow.getContent());
+        renderTimeRangeView(holder,mEventForCurrentRow);
 
-        String formatedTime = formatTimeRange(mEventForCurrentRow.getDate(), mEventForCurrentRow.getEndDate());
+        holder.eventCheckBox.setChecked(false);
+    }
 
-        if (formatedTime != null) {
+    private void renderTimeRangeView(EventViewHolder holder,Event event) {
+        if (!event.isToDo()) {
+            String formatedTime = formatTimeRange(event.getDate(), event.getEndDate());
             holder.timeRangeView.setText(formatedTime);
         } else {
             holder.timeRangeView.setText(R.string.default_time);
             holder.timeRangeView.setVisibility(View.INVISIBLE);
         }
-
-        holder.eventCheckBox.setChecked(false);
     }
 
     private String formatTimeRange(Date startDate, Date endDate) {
-        if (startDate != null & endDate != null) {
             final Calendar c = Calendar.getInstance();
             c.setTime(startDate);
             int startHour = c.get(Calendar.HOUR_OF_DAY);
@@ -61,9 +63,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             int endHour = c.get(Calendar.HOUR_OF_DAY);
             int endMin = c.get(Calendar.MINUTE);
             return String.format(TIME_RANGE_FORMAT, DateFormatter.formatTimeHHMM(startHour,startMin), DateFormatter.formatTimeHHMM(endHour,endMin));
-        } else {
-            return null;
-        }
     }
 
     @Override

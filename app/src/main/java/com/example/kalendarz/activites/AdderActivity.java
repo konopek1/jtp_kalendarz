@@ -23,6 +23,7 @@ public class AdderActivity extends AppCompatActivity {
 
     private EventDAO eventDAO;
     private Realm realm;
+    private Bundle extras;
 
     private LinearLayout mNotifyView;
     private TextView mDateView;
@@ -35,6 +36,7 @@ public class AdderActivity extends AppCompatActivity {
     private int dataPickerFor;
     private int timePickerFor;
 
+    private boolean isToDo = true;
     private Calendar startDate;
     private Calendar endDate;
     private Calendar notifyDate;
@@ -44,14 +46,20 @@ public class AdderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUp();
+        initViews();
+    }
+
+    private void setUp() {
         realm = RealmProvider.getRealm();
+        extras = getIntent().getExtras();
         setContentView(R.layout.activity_adder);
         startDate = Calendar.getInstance();
+        startDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
         endDate = Calendar.getInstance();
         notifyDate = Calendar.getInstance();
 
         eventDAO = EventDAO.getInstance();
-        initViews();
     }
 
     public void onRadioNotifyButtonClicked(View view) {
@@ -70,11 +78,12 @@ public class AdderActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        realm.close();
     }
 
     public void chooseDate(View view) {
         dataPickerFor = view.getId();
-        DialogFragment newFragment = new DatePickerFragment();
+        DialogFragment newFragment = new DatePickerFragment(extras.getLong(MainActivity.DATE_EXTRAS));
         newFragment.show(getSupportFragmentManager(), getString(R.string.datePicker));
     }
 
@@ -83,18 +92,13 @@ public class AdderActivity extends AppCompatActivity {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), getString(R.string.timePicker));
     }
-
+    //TODO uproscic sprawdzic tez czy godzina sie zmienia najelpiej wykstraktowac wszystko do mniejszych funkcji
     public void proccessDataPickerResult(int year, int month, int day) {
         switch (dataPickerFor) {
             case R.id.activity_add_date_textView:
                 mDateView.setText(DateFormatter.formatDateDDMMYYYY(year, month, day));
                 startDate.set(year, month, day);
-                if (endDate.get(Calendar.HOUR_OF_DAY) < startDate.get(Calendar.HOUR_OF_DAY)) {
-                    //TODO uproscic sprawdzic tez czy godzina sie zmienia najelpiej wykstraktowac wszystko do mniejszych funkcji
-                    endDate.set(year, month, day + 1);
-                } else {
-                    endDate.set(year, month, day);
-                }
+                endDate.set(year, month, day);
                 break;
             case R.id.activity_add_date_notify:
                 mNotifyDataView.setText(DateFormatter.formatDateDDMMYYYY(year, month, day));
@@ -108,11 +112,13 @@ public class AdderActivity extends AppCompatActivity {
                 mTimeFrom.setText(DateFormatter.formatTimeHHMM(hourOfDay, minute));
                 startDate.set(Calendar.MINUTE, minute);
                 startDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                isToDo = false;
                 break;
             case R.id.date_to:
                 mTimeTo.setText(DateFormatter.formatTimeHHMM(hourOfDay, minute));
                 endDate.set(Calendar.MINUTE, minute);
                 endDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                isToDo = false;
                 break;
             case R.id.activity_add_time_notify:
                 mNotifyTime.setText(DateFormatter.formatTimeHHMM(hourOfDay, minute));
@@ -123,16 +129,17 @@ public class AdderActivity extends AppCompatActivity {
     }
 
     public void initViews() {
+
         mNotifyView = findViewById(R.id.notify_date_layout);
         mNotifyRadioButton = findViewById(R.id.notify_radio_Yes);
 
         mContentInput = findViewById(R.id.activity_add_opis_input);
 
         mDateView = findViewById(R.id.activity_add_date_textView);
-        mDateView.setText(DateFormatter.getCurrentDateDDMMYYYY());
+        initDateView(mDateView);
 
         mNotifyDataView = findViewById(R.id.activity_add_date_notify);
-        mNotifyDataView.setText(DateFormatter.getCurrentDateDDMMYYYY());
+        initDateView(mNotifyDataView);
 
         mTimeFrom = findViewById(R.id.date_from);
 
@@ -141,13 +148,18 @@ public class AdderActivity extends AppCompatActivity {
         mNotifyTime = findViewById(R.id.activity_add_time_notify);
     }
 
+    public void initDateView(TextView view) {
+        long timestampFromIntent = extras.getLong(MainActivity.DATE_EXTRAS);
+        view.setText(DateFormatter.formatDateDDMMYYYY(timestampFromIntent));
+    }
+
 
     public void onCreateButtonClick(View view) {
-        if(!validate()) return;
+        if (!validate()) return;
         createEventFromForm();
         finish();
     }
-    
+
     private boolean validate() {
         boolean valid = true;
 
@@ -155,18 +167,13 @@ public class AdderActivity extends AppCompatActivity {
 
         return valid;
     }
-    
+
     private void createEventFromForm() {
         String content = mContentInput.getText().toString();
         boolean isNotify = mNotifyRadioButton.isChecked();
-        Date startTime = null;
-        Date endTime = null;
 
-        if(startDate.isSet(Calendar.HOUR_OF_DAY)) startTime = startDate.getTime();
-        if(endDate.isSet(Calendar.HOUR_OF_DAY)) endTime = endDate.getTime();
-
-        Event event = new Event(content, startTime, endTime , isNotify);
-        eventDAO.save(realm,event);
+        Event event = new Event(content, startDate.getTime(),endDate.getTime(), isNotify,isToDo);
+        eventDAO.save(realm, event);
     }
 
 

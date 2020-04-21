@@ -20,7 +20,7 @@
               android:text="tresccccccccccccccccdasdasfsdfsdfsdfdcc"
               android:scrollHorizontally="false"
               android:layout_marginLeft="@dimen/small_padding"
-              android:textColor="@android:color/black"
+              android:textColor="@android:color/white"
               android:maxLines="5"
               android:id="@+id/eventContent"
               app:layout_constraintEnd_toStartOf="@+id/textView3" app:layout_constraintTop_toTopOf="parent"

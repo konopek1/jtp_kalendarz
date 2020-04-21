@@ -24,7 +24,11 @@ import java.util.Calendar;
  */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    DatePickerDialog.OnDateSetListener from_dateListener,to_dateListener;
+    private long date;
+
+    public DatePickerFragment(long date) {
+        this.date = date;
+    }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
@@ -36,7 +40,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(date);
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);

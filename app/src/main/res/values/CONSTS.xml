@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="SCHEMA_VERSION">3</integer>
+    <integer name="SCHEMA_VERSION">5</integer>
 </resources>

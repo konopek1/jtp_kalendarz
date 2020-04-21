@@ -23,6 +23,8 @@ public class Event extends RealmObject {
 
     private boolean useNotification;
 
+    private boolean isToDo;
+
     public Event() {
 
     }
@@ -32,13 +34,14 @@ public class Event extends RealmObject {
         this.date = date;
     }
 
-    public Event(String opis, Date date, Date endDate, boolean useNotification) {
+    public Event(String opis, Date date, Date endDate, boolean useNotification,boolean isToDo) {
         this.content = opis;
         this.date = date;
         this.endDate = endDate;
         this.useNotification = useNotification;
         this.id = getId();
         this.isDone = false;
+        this.isToDo = isToDo;
     }
 
     public long getId() {
@@ -67,6 +70,8 @@ public class Event extends RealmObject {
     public boolean isUseNotification() {
         return useNotification;
     }
+
+    public boolean isToDo() { return isToDo; }
 }
 
 

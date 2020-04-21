@@ -10,7 +10,7 @@
     <TextView
             android:text="@string/add_activity_header"
             android:layout_width="wrap_content"
-            android:textColor="@color/secondaryDarkColor"
+            android:textColor="@color/secondaryColor"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:id="@+id/textView" app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,6 @@
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/dots"
             android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/activity_add_opis_input"
@@ -125,6 +124,7 @@
         <RadioButton android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:checked="true"
+                     android:buttonTint="@color/secondaryColor"
                      android:id="@+id/notify_radio_No"
                      android:onClick="onRadioNotifyButtonClicked"
                      android:text="@string/notify_radio_2_label">
@@ -173,14 +173,24 @@
                 android:onClick="chooseTime"
                 android:layout_marginStart="@dimen/big_padding"/>
     </LinearLayout>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/add_task_button_label"
             android:id="@+id/add_task"
+            android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             android:onClick="onCreateButtonClick"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup"
             android:layout_marginTop="32dp"
+            app:backgroundTint="@android:color/transparent"
+            app:cornerRadius="8dp"
+            app:rippleColor="#33AAAAAA"
+            app:strokeColor="@color/secondaryColor"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            app:strokeWidth="2dp"
+            android:background="@color/primaryColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>

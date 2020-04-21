@@ -17,6 +17,12 @@ public class DateFormatter {
         return String.format(DDMMYYY, dayStr, monthStr, yearStr);
     }
 
+    public static String formatDateDDMMYYYY(long date) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(date);
+        return formatDateDDMMYYYY(c.get(Calendar.YEAR),c.get(Calendar.MONTH) + 1,c.get(Calendar.DAY_OF_MONTH));
+    }
+
     public static String getCurrentDateDDMMYYYY() {
         final Calendar c = Calendar.getInstance();
         return formatDateDDMMYYYY(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));

@@ -2,12 +2,10 @@ package com.example.kalendarz.DAO;
 
 import com.example.kalendarz.common.Event;
 import com.example.kalendarz.utils.DateFormatter;
-import com.example.kalendarz.utils.RealmProvider;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class EventDAO {
@@ -36,13 +34,15 @@ public class EventDAO {
         return query.findAll();
     }
 
-    public RealmResults<Event> getEventsByDate(Realm realm,int year,int month, int day) {
+    public RealmResults<Event> getEventsByDateSortedByDate(Realm realm, int year, int month, int day) {
         Date startOfDay = DateFormatter.getDateFromYYMMDD(year, month, day);
         Date endOfDay = DateFormatter.getDateFromYYMMDD(year, month, day + 1);
 
         RealmQuery<Event> query = realm.where(Event.class);
-        query.between("date",startOfDay,endOfDay);
+        query
+                .between("date",startOfDay,endOfDay)
+                .sort("isToDo");
 
-        return query.findAll();
+        return query.findAll().sort("date");
     }
 }
