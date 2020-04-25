@@ -2,22 +2,22 @@ package com.example.kalendarz.activites;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import com.example.kalendarz.DAO.EventDAO;
 import com.example.kalendarz.R;
 import com.example.kalendarz.common.Event;
+import com.example.kalendarz.fragments.DatePickerFragment;
+import com.example.kalendarz.fragments.TimePickerFragment;
 import com.example.kalendarz.utils.DateFormatter;
 import com.example.kalendarz.utils.RealmProvider;
 import com.example.kalendarz.utils.Validator;
 import io.realm.Realm;
+import io.realm.exceptions.RealmException;
+import io.realm.exceptions.RealmPrimaryKeyConstraintException;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class AdderActivity extends AppCompatActivity {
 
@@ -56,7 +56,10 @@ public class AdderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_adder);
         startDate = Calendar.getInstance();
         startDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
+        startDate.set(Calendar.MINUTE,1);
         endDate = Calendar.getInstance();
+        endDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
+        endDate.set(Calendar.MINUTE,1);
         notifyDate = Calendar.getInstance();
 
         eventDAO = EventDAO.getInstance();
@@ -92,19 +95,28 @@ public class AdderActivity extends AppCompatActivity {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), getString(R.string.timePicker));
     }
-    //TODO uproscic sprawdzic tez czy godzina sie zmienia najelpiej wykstraktowac wszystko do mniejszych funkcji
+
     public void proccessDataPickerResult(int year, int month, int day) {
         switch (dataPickerFor) {
             case R.id.activity_add_date_textView:
-                mDateView.setText(DateFormatter.formatDateDDMMYYYY(year, month, day));
-                startDate.set(year, month, day);
-                endDate.set(year, month, day);
+                proccesDataPickerForDate(year, month, day);
                 break;
             case R.id.activity_add_date_notify:
-                mNotifyDataView.setText(DateFormatter.formatDateDDMMYYYY(year, month, day));
-                notifyDate.set(year, month, day);
+                proccessDataPickerForNotifyDate(year, month, day);
         }
     }
+
+    private void proccessDataPickerForNotifyDate(int year, int month, int day) {
+        mNotifyDataView.setText(DateFormatter.formatDateDDMMYYYY(year, month, day));
+        notifyDate.set(year, month, day);
+    }
+
+    private void proccesDataPickerForDate(int year, int month, int day) {
+        mDateView.setText(DateFormatter.formatDateDDMMYYYY(year, month, day));
+        startDate.set(year, month, day);
+        endDate.set(year, month, day);
+    }
+
 
     public void proccessTimePickerResult(int hourOfDay, int minute) {
         switch (timePickerFor) {
@@ -136,10 +148,10 @@ public class AdderActivity extends AppCompatActivity {
         mContentInput = findViewById(R.id.activity_add_opis_input);
 
         mDateView = findViewById(R.id.activity_add_date_textView);
-        initDateView(mDateView);
+        initDateGenericView(mDateView);
 
         mNotifyDataView = findViewById(R.id.activity_add_date_notify);
-        initDateView(mNotifyDataView);
+        initDateGenericView(mNotifyDataView);
 
         mTimeFrom = findViewById(R.id.date_from);
 
@@ -148,7 +160,7 @@ public class AdderActivity extends AppCompatActivity {
         mNotifyTime = findViewById(R.id.activity_add_time_notify);
     }
 
-    public void initDateView(TextView view) {
+    public void initDateGenericView(TextView view) {
         long timestampFromIntent = extras.getLong(MainActivity.DATE_EXTRAS);
         view.setText(DateFormatter.formatDateDDMMYYYY(timestampFromIntent));
     }
@@ -168,12 +180,17 @@ public class AdderActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void createEventFromForm() {
+    private void createEventFromForm() throws RealmPrimaryKeyConstraintException {
         String content = mContentInput.getText().toString();
         boolean isNotify = mNotifyRadioButton.isChecked();
 
         Event event = new Event(content, startDate.getTime(),endDate.getTime(), isNotify,isToDo);
-        eventDAO.save(realm, event);
+        try {
+            eventDAO.save(realm, event);
+        } catch (RealmException e) {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

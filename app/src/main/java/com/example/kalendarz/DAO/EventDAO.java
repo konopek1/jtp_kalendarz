@@ -1,10 +1,13 @@
 package com.example.kalendarz.DAO;
 
+import android.widget.Toast;
 import com.example.kalendarz.common.Event;
 import com.example.kalendarz.utils.DateFormatter;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.exceptions.RealmException;
+import io.realm.exceptions.RealmPrimaryKeyConstraintException;
 
 import java.util.Date;
 
@@ -25,7 +28,13 @@ public class EventDAO {
 
     public  void  save(Realm realm,Event event) {
         realm.beginTransaction();
-        realm.insert(event);
+        try {
+            realm.insert(event);
+        }
+        catch (RealmPrimaryKeyConstraintException e) {
+            realm.cancelTransaction();
+            return;
+        }
         realm.commitTransaction();
     }
 
@@ -40,9 +49,8 @@ public class EventDAO {
 
         RealmQuery<Event> query = realm.where(Event.class);
         query
-                .between("date",startOfDay,endOfDay)
-                .sort("isToDo");
+                .between("date",startOfDay,endOfDay).sort("date");
 
-        return query.findAll().sort("date");
+        return query.findAll();
     }
 }

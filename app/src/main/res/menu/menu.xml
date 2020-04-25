@@ -5,5 +5,9 @@
             android:icon="@drawable/ic_back_to_today"
             android:title="Today"
             app:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/import_from_calendar"
+            android:title="Import Calendar"
+            app:showAsAction="collapseActionView"/>
 
 </menu>

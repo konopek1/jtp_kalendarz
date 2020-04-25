@@ -72,6 +72,8 @@ public class Event extends RealmObject {
     }
 
     public boolean isToDo() { return isToDo; }
+
+    public void setDone(boolean done) { isDone = done; }
 }
 
 

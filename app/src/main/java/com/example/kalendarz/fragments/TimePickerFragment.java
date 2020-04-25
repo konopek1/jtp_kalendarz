@@ -1,4 +1,4 @@
-package com.example.kalendarz.activites;
+package com.example.kalendarz.fragments;
 
 
 import android.app.Dialog;
@@ -10,12 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import com.example.kalendarz.activites.AdderActivity;
 
 import java.util.Calendar;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     @NonNull
     @Override

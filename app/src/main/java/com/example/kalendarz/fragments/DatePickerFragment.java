@@ -1,4 +1,4 @@
-package com.example.kalendarz.activites;
+package com.example.kalendarz.fragments;
 
 
 import android.app.DatePickerDialog;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.kalendarz.R;
+import com.example.kalendarz.activites.AdderActivity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
