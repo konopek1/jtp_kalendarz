@@ -10,6 +10,7 @@ import com.example.kalendarz.R;
 import com.example.kalendarz.common.Event;
 import com.example.kalendarz.fragments.DatePickerFragment;
 import com.example.kalendarz.fragments.TimePickerFragment;
+import com.example.kalendarz.notifcations.Notify;
 import com.example.kalendarz.utils.DateFormatter;
 import com.example.kalendarz.utils.RealmProvider;
 import com.example.kalendarz.utils.Validator;
@@ -183,12 +184,19 @@ public class AdderActivity extends AppCompatActivity {
     private void createEventFromForm() throws RealmPrimaryKeyConstraintException {
         String content = mContentInput.getText().toString();
         boolean isNotify = mNotifyRadioButton.isChecked();
+        Event event = null;
 
-        Event event = new Event(content, startDate.getTime(),endDate.getTime(), isNotify,isToDo);
+        if (!isNotify) {
+            event = new Event(content, startDate.getTime(), endDate.getTime(), false, isToDo);
+        } else {
+            Notify notify = new Notify(getApplicationContext(), notifyDate.getTimeInMillis(), "Event notification", content);
+            event = new Event(content, startDate.getTime(), endDate.getTime(), isToDo, notify);
+        }
+
         try {
             eventDAO.save(realm, event);
         } catch (RealmException e) {
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

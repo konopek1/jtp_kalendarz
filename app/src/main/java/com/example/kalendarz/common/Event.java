@@ -1,11 +1,8 @@
 package com.example.kalendarz.common;
 
-import io.realm.Realm;
+import com.example.kalendarz.notifcations.Notify;
 import io.realm.RealmObject;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -23,6 +20,8 @@ public class Event extends RealmObject {
 
     private boolean useNotification;
 
+    private Notify notification;
+
     private boolean isToDo;
 
     public Event() {
@@ -34,7 +33,7 @@ public class Event extends RealmObject {
         this.date = date;
     }
 
-    public Event(String opis, Date date, Date endDate, boolean useNotification,boolean isToDo) {
+    public Event(String opis, Date date, Date endDate, boolean useNotification, boolean isToDo) {
         this.content = opis;
         this.date = date;
         this.endDate = endDate;
@@ -42,6 +41,17 @@ public class Event extends RealmObject {
         this.id = getId();
         this.isDone = false;
         this.isToDo = isToDo;
+    }
+
+    public Event(String opis, Date date, Date endDate, boolean isToDo, Notify notification) {
+        this.content = opis;
+        this.date = date;
+        this.endDate = endDate;
+        this.useNotification = true;
+        this.id = getId();
+        this.isDone = false;
+        this.isToDo = isToDo;
+        this.notification = notification;
     }
 
     public long getId() {

@@ -1,7 +1,6 @@
 package com.example.kalendarz.common;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class EventFabric {
     private  int counter;
@@ -32,6 +31,6 @@ public class EventFabric {
         c.set(year,month,day);
         boolean useNotification = (counter % 2 == 0);
         counter++;
-        return new Event(content,c.getTime(),c.getTime(),useNotification);
+        return new Event(content, c.getTime(), c.getTime(), useNotification, false);
     }
 }

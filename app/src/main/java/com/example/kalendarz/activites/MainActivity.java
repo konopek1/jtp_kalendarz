@@ -21,9 +21,9 @@ import com.example.kalendarz.DAO.EventDAO;
 import com.example.kalendarz.R;
 import com.example.kalendarz.common.Event;
 import com.example.kalendarz.common.EventListAdapter;
+import com.example.kalendarz.exceptions.PermissionDeniedException;
 import com.example.kalendarz.utils.CalendarApi;
 import com.example.kalendarz.utils.DateFormatter;
-import com.example.kalendarz.exceptions.PermissionDeniedException;
 import com.example.kalendarz.utils.RealmProvider;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private long currentCalendarDate = (new Date()).getTime();
     private EventDAO eventDAO;
     private RealmResults<Event> events;
+    private NotifyReciver notifyReciver;
     private RealmChangeListener<RealmResults<Event>> realmChangeListener = events -> mAdapter.notifyDataSetChanged();
     private CalendarView.OnDateChangeListener onDateChangeListener = (calendarView, year, month, day) -> {
         events = eventDAO.getEventsByDateSortedByDate(realm,year,month,day);
@@ -63,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
         events = getEventsByCalendarDate(mCalendarView.getDate());
         initRecyclerViewFromEvents();
         bindEvents();
+        notifyReciver = new NotifyReciver();
     }
+
 
     @Override
     protected void onDestroy() {
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             Event event = EventFromCalendarProviderProjection(crs);
             eventDAO.save(realm,event);
         }
+        crs.close();
     }
 
     @NotNull

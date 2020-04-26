@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.example.kalendarz">
-    <uses-permission android:name="android.permission.READ_CALENDAR" />
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.example.kalendarz">
+
+    <uses-permission android:name="android.permission.READ_CALENDAR"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activites.AdderActivity"
-            android:label="Adder Activity"
-                  android:parentActivityName=".activites.MainActivity">
-                  <meta-data android:name="android.support.PARENT_ACTIVITY"
-                             android:value=".activites.MainActivity">
-        </meta-data>
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
+        <receiver
+                android:name=".activites.NotifyReciver"
+                android:enabled="true"
+                android:exported="true">
+        </receiver>
+
+        <activity
+                android:name=".activites.AdderActivity"
+                android:label="Adder Activity"
+                android:parentActivityName=".activites.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activites.MainActivity">
+            </meta-data>
         </activity>
         <activity android:name=".activites.MainActivity">
             <intent-filter>
