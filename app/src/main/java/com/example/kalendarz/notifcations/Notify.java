@@ -4,6 +4,9 @@ import android.content.Context;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
+/**
+ * Klasa reprezentująca powiadomienie
+ */
 public class Notify extends RealmObject {
     @PrimaryKey
     private int id;
@@ -14,6 +17,14 @@ public class Notify extends RealmObject {
     public Notify() {
     }
 
+    /**
+     * W momencie tworzenia powiadomienie zostaję również  dodane powiadomienia do AlarmMenegera
+     * któy odpala je w odpowiednim czasie
+     * @param ctx
+     * @param when
+     * @param title
+     * @param text
+     */
     public Notify(Context ctx, long when, String title, String text) {
         this.id = generateId(when);
         this.when = when;

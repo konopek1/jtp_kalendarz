@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
         <receiver
-                android:name=".activites.NotifyReciver"
+                android:name=".notifcations.NotifyReciver"
                 android:enabled="true"
                 android:exported="true">
         </receiver>

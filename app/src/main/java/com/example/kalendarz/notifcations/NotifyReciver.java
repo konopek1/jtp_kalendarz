@@ -1,4 +1,4 @@
-package com.example.kalendarz.activites;
+package com.example.kalendarz.notifcations;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import com.example.kalendarz.R;
+import com.example.kalendarz.activites.MainActivity;
 import com.example.kalendarz.notifcations.NotificationCreator;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -28,6 +29,11 @@ public class NotifyReciver extends BroadcastReceiver {
         deliverNotification(intent.getExtras(), context);
     }
 
+    /**
+     * @param intentBundle
+     * @param ctx
+     * Wyswietlenie powiadomienia, funkcja ta jest wywoływana prez AlarmManagera
+     */
     private void deliverNotification(Bundle intentBundle, Context ctx) {
         int id = intentBundle.getInt(NotificationCreator.NOTIFICATION_ID_EXTRAS);
         String title = intentBundle.getString(NotificationCreator.NOTIFICATION_TITLE_EXTRAS);
@@ -43,6 +49,10 @@ public class NotifyReciver extends BroadcastReceiver {
         createNotificationChannel(mNotifyManager);
     }
 
+    /**
+     * @param notificationManager
+     * Stworzenie Kanału Powiadomień, taki Kanał musi istnieć aby nasza aplikacja mogłą wysyłać powiadomienia
+     */
     private void createNotificationChannel(NotificationManager notificationManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
@@ -55,6 +65,14 @@ public class NotifyReciver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * Zwraca podstwowy styl w jakim będzie wyświetlana aplikacja, wzorzec Fabryki
+     * @param ctx
+     * @param title
+     * @param text
+     * @param intent
+     * @return
+     */
     private static NotificationCompat.Builder getNotificationBuilder(Context ctx, String title, String text, Intent intent) {
         PendingIntent pendingIntent = PendingIntent.getActivity(ctx, notifyIntnetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(ctx, PRIMARY_CHANNEL_ID)

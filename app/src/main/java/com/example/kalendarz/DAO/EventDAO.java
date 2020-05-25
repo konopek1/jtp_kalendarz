@@ -43,6 +43,14 @@ public class EventDAO {
         return query.findAll();
     }
 
+    /**
+     * @param realm
+     * @param year
+     * @param month
+     * @param day
+     * @return RealmResults<Event>
+     * Zwraca Eventy posortowane Datą na przestrzeni jakiegoś czasu
+     */
     public RealmResults<Event> getEventsByDateSortedByDate(Realm realm, int year, int month, int day) {
         Date startOfDay = DateFormatter.getDateFromYYMMDD(year, month, day);
         Date endOfDay = DateFormatter.getDateFromYYMMDD(year, month, day + 1);

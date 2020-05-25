@@ -20,6 +20,9 @@ import io.realm.exceptions.RealmPrimaryKeyConstraintException;
 
 import java.util.Calendar;
 
+/**
+ * Aktywność odpowiadająca za dodanie nowych wydarzeń
+ */
 public class AdderActivity extends AppCompatActivity {
 
     private EventDAO eventDAO;
@@ -44,6 +47,9 @@ public class AdderActivity extends AppCompatActivity {
     private EditText mContentInput;
 
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +68,14 @@ public class AdderActivity extends AppCompatActivity {
         endDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
         endDate.set(Calendar.MINUTE,1);
         notifyDate = Calendar.getInstance();
-
+        notifyDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
+        endDate.set(Calendar.MINUTE,1);
         eventDAO = EventDAO.getInstance();
     }
 
+    /**
+     * @param view
+     */
     public void onRadioNotifyButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         if (!checked) return;
@@ -181,6 +191,10 @@ public class AdderActivity extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * @throws RealmPrimaryKeyConstraintException
+     * Tworzy event z danych zapisanych w tej aktywności oraz zapisuje do bazy danych
+     */
     private void createEventFromForm() throws RealmPrimaryKeyConstraintException {
         String content = mContentInput.getText().toString();
         boolean isNotify = mNotifyRadioButton.isChecked();

@@ -2,7 +2,7 @@ package com.example.kalendarz.exceptions;
 
 import androidx.annotation.Nullable;
 
-public class    PermissionDeniedException extends Exception {
+public class PermissionDeniedException extends Exception {
     private String target;
 
     public PermissionDeniedException(String target) {

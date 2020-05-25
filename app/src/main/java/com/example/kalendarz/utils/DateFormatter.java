@@ -3,6 +3,10 @@ package com.example.kalendarz.utils;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Klasa odpowiedzialna za formatowanie dat
+ *
+ */
 public class DateFormatter {
 
     private final static String DDMMYYY = "%s.%s.%s";

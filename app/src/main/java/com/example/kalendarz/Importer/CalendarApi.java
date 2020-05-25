@@ -1,4 +1,4 @@
-package com.example.kalendarz.utils;
+package com.example.kalendarz.Importer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -10,6 +10,10 @@ import android.provider.CalendarContract;
 import androidx.core.content.ContextCompat;
 import com.example.kalendarz.exceptions.PermissionDeniedException;
 
+
+/**
+ * Klasa ta jest odpowiedzialna za Komunikację z Kalendarzem Googl'a
+ */
 public class CalendarApi {
 
     public static final int EVENTS_DSTART_INDEX = 0;
@@ -19,6 +23,13 @@ public class CalendarApi {
 
     public static final int CALENDAR_PERMISSION_CODE = 0;
 
+
+    /**
+     * Metoda zwraca kursor po bazie daych Google Kalendarza
+     * @param ctx
+     * @return
+     * @throws PermissionDeniedException
+     */
     @SuppressLint("MissingPermission")
     public static Cursor getCursorForCalendars(Context ctx) throws PermissionDeniedException {
         if(!checkForPermission(ctx)) {

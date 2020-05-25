@@ -22,7 +22,8 @@ import com.example.kalendarz.R;
 import com.example.kalendarz.common.Event;
 import com.example.kalendarz.common.EventListAdapter;
 import com.example.kalendarz.exceptions.PermissionDeniedException;
-import com.example.kalendarz.utils.CalendarApi;
+import com.example.kalendarz.notifcations.NotifyReciver;
+import com.example.kalendarz.Importer.CalendarApi;
 import com.example.kalendarz.utils.DateFormatter;
 import com.example.kalendarz.utils.RealmProvider;
 import io.realm.Realm;
@@ -33,8 +34,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.example.kalendarz.utils.CalendarApi.CALENDAR_PERMISSION_CODE;
+import static com.example.kalendarz.Importer.CalendarApi.CALENDAR_PERMISSION_CODE;
 
+/**
+ * Główna aktywność w której wyświetlane są Wydarzenia oraz kalendarz
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
@@ -74,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
         realm.close();
     }
 
+    /**
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     * Sprawdza czy aplikacja ma uprawnienia do Kalendarza
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -89,6 +99,48 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private Cursor getCursorForCalendarEvents() {
+        Cursor crs = null;
+        try {
+            crs = CalendarApi.getCursorForEvents(this);
+        } catch (PermissionDeniedException e) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION_CODE);
+            return crs;
+        }
+        return  crs;
+    }
+
+    private void importEventsFromGoogleCalendar() {
+        Cursor crs = getCursorForCalendarEvents();
+        creatEventFromCalendarProvider(crs);
+    }
+
+    private void creatEventFromCalendarProvider(Cursor crs) {
+        Realm realm = RealmProvider.getRealm();
+        crs.moveToFirst();
+        while(crs.moveToNext()){
+            Event event = EventFromCalendarProviderProjection(crs);
+            realm.beginTransaction();
+            realm.insert(event);
+            realm.commitTransaction();
+        }
+        crs.close();
+    }
+
+    /**
+     * @param crs
+     * @return Event
+     * tworzy Event na podstawie  kursora po bazie danych Google Kalendarza
+     */
+    @NotNull
+    private Event EventFromCalendarProviderProjection(Cursor crs) {
+        long startDate = crs.getLong(CalendarApi.EVENTS_DSTART_INDEX);
+        long endDate = crs.getLong(CalendarApi.EVENTS_DEND_INDEX);
+        String eventTitle =  crs.getString(CalendarApi.EVENTS_TITLE_INDEX);
+        boolean isToDo = crs.getInt(CalendarApi.EVENTS_ISTODO_INDEX) == 1;
+        return new Event(eventTitle,new Date(startDate),new Date(endDate),false,isToDo);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -96,6 +148,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * @param item
+     * @return
+     * Funckja wywoływana na na wybranym elemncie z menu opcji rozwijanego
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -110,36 +167,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void importEventsFromGoogleCalendar() {
-        Cursor crs = null;
-        try {
-            crs = CalendarApi.getCursorForEvents(this);
-        } catch (PermissionDeniedException e) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION_CODE);
-            return;
-        }
-        creatEventFromCalendarProvider(crs);
-    }
-
-    private void creatEventFromCalendarProvider(Cursor crs) {
-        crs.moveToFirst();
-        while(crs.moveToNext()){
-            Event event = EventFromCalendarProviderProjection(crs);
-            eventDAO.save(realm,event);
-        }
-        crs.close();
-    }
-
-    @NotNull
-    private Event EventFromCalendarProviderProjection(Cursor crs) {
-        long startDate = crs.getLong(CalendarApi.EVENTS_DSTART_INDEX);
-        long endDate = crs.getLong(CalendarApi.EVENTS_DEND_INDEX);
-        String eventTitle =  crs.getString(CalendarApi.EVENTS_TITLE_INDEX);
-        boolean isToDo = crs.getInt(CalendarApi.EVENTS_ISTODO_INDEX) == 1;
-        return new Event(eventTitle,new Date(startDate),new Date(endDate),false,isToDo);
-    }
-
-
+    /**
+     * @param date
+     * Zmienia date wskazywana przez kalendarz, co zmienia caly widok
+     */
     private void changeCalendarDate(long date) {
         mCalendarView.setDate(date);
         Calendar c = Calendar.getInstance();
@@ -163,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
         mCalendarView = findViewById(R.id.calendarView);
     }
 
+    /**
+     * Inicjuje widok listy wydarzeń z Wydarzeń odczytanych z bazy danych
+     */
     public void initRecyclerViewFromEvents() {
         mAdapter = new EventListAdapter(this, events);
         mRecyclerView = findViewById(R.id.eventRecyclerView);
@@ -172,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
+    /**
+     * Wyciąga z bazy danych wydarzenia na konkretny dzień
+     * @param timestamp
+     * @return
+     */
     public RealmResults<Event> getEventsByCalendarDate(long timestamp) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(timestamp);

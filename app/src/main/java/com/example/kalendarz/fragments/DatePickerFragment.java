@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment do wyboru daty pojawia sięw momencie kiedy chcemy wybrac jakąś datę
  */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -35,7 +35,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
         return textView;
     }
     @NonNull
