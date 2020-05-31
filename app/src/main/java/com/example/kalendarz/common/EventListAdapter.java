@@ -18,14 +18,26 @@ import io.realm.RealmResults;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The type Event list adapter.
+ */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
 
+    /**
+     * The M event list.
+     */
     public RealmResults<Event> mEventList;
     private LayoutInflater mInflater;
     private Realm realm;
 
     private final static String TIME_RANGE_FORMAT = "%s - %s";
 
+    /**
+     * Instantiates a new Event list adapter.
+     *
+     * @param context   the context
+     * @param eventList the event list
+     */
     public EventListAdapter(Context context, RealmResults<Event> eventList) {
         mInflater = LayoutInflater.from(context);
         realm = RealmProvider.getRealm();
@@ -71,7 +83,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         }
     }
 
-    private String formatTimeRange(Date startDate, Date endDate) {
+    public static String formatTimeRange(Date startDate, Date endDate) {
         final Calendar c = Calendar.getInstance();
         c.setTime(startDate);
         int startHour = c.get(Calendar.HOUR_OF_DAY);
@@ -87,18 +99,47 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         return mEventList.size();
     }
 
+    /**
+     * Update data.
+     *
+     * @param events the events
+     */
     public void updateData(RealmResults<Event> events) {
         mEventList = events;
         notifyDataSetChanged();
     }
 
+    /**
+     * The type Event view holder.
+     */
     class EventViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * The Time range view.
+         */
         public final TextView timeRangeView;
+        /**
+         * The Content view.
+         */
         public final TextView contentView;
+        /**
+         * The Check box.
+         */
         public final CheckBox checkBox;
+        /**
+         * The Remove icon.
+         */
         public final ImageView removeIcon;
+        /**
+         * The M adapter.
+         */
         final EventListAdapter mAdapter;
 
+        /**
+         * Instantiates a new Event view holder.
+         *
+         * @param itemView the item view
+         * @param adapter  the adapter
+         */
         public EventViewHolder(@NonNull View itemView, EventListAdapter adapter) {
             super(itemView);
             this.mAdapter = adapter;

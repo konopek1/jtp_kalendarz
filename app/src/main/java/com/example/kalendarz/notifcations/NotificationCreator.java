@@ -8,23 +8,39 @@ import android.content.Intent;
 import static android.content.Context.ALARM_SERVICE;
 
 /**
- * Klasa ta jest odpowiedzialna za proces tworzenie powiadomienia
+ * Class for Notification Creator
  */
 public class NotificationCreator {
+    /**
+     * The constant PRIMARY_CHANNEL_ID.
+     */
     public static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
+    /**
+     * The constant NOTIFICATION_ID_EXTRAS.
+     */
     public static final String NOTIFICATION_ID_EXTRAS = "notification_id";
+    /**
+     * The constant NOTIFICATION_TITLE_EXTRAS.
+     */
     public static final String NOTIFICATION_TITLE_EXTRAS = "title";
+    /**
+     * The constant NOTIFICATION_TEXT_EXTRAS.
+     */
     public static final String NOTIFICATION_TEXT_EXTRAS = "text";
+    /**
+     * The constant notifyIntnetId.
+     */
     public static final int notifyIntnetId = 0;
 
 
     /**
-     * Tworzymy powiadomienie
-     * @param ctx
-     * @param id
-     * @param title
-     * @param text
-     * @param when
+     * Create notification
+     *
+     * @param ctx   the ctx
+     * @param id    the id
+     * @param title the title
+     * @param text  the text
+     * @param when  the when
      */
     public static void createEventNotification(Context ctx, int id, String title, String text, long when) {
         PendingIntent notifyPendingIntent = createNotificationEventForBroadcastReciver(ctx, id, title, text);
@@ -32,7 +48,6 @@ public class NotificationCreator {
     }
 
     /**
-     * Opakujemy powiadomienia tak aby było on odopwoiednie dla @var Alarm Manager'a
      * @param ctx
      * @param id
      * @param title

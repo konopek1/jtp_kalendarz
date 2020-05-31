@@ -37,7 +37,7 @@ import java.util.Date;
 import static com.example.kalendarz.Importer.CalendarApi.CALENDAR_PERMISSION_CODE;
 
 /**
- * Główna aktywność w której wyświetlane są Wydarzenia oraz kalendarz
+ * Main activty responsible for displaying calendar and events
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -49,14 +49,25 @@ public class MainActivity extends AppCompatActivity {
     private EventDAO eventDAO;
     private RealmResults<Event> events;
     private NotifyReciver notifyReciver;
-    private RealmChangeListener<RealmResults<Event>> realmChangeListener = events -> mAdapter.notifyDataSetChanged();
-    private CalendarView.OnDateChangeListener onDateChangeListener = (calendarView, year, month, day) -> {
+
+    /**
+     * Lambda Caalled when Event's in DB are updated,deleted,inserted
+     */
+    private final RealmChangeListener<RealmResults<Event>> realmChangeListener = events -> mAdapter.notifyDataSetChanged();
+
+    /**
+     * Lambda called when user change date on calendar view
+     */
+    private final CalendarView.OnDateChangeListener onDateChangeListener = (calendarView, year, month, day) -> {
         events = eventDAO.getEventsByDateSortedByDate(realm,year,month,day);
         events.addChangeListener(realmChangeListener);
         setCurrentCalendarDate(year,month,day);
         mAdapter.updateData(events);
     };
 
+    /**
+     * The constant DATE_EXTRAS.
+     */
     public static final String DATE_EXTRAS = "com.example.activities.DATE";
 
     @Override
@@ -82,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
      * @param requestCode
      * @param permissions
      * @param grantResults
-     * Sprawdza czy aplikacja ma uprawnienia do Kalendarza
+     * Check if application have needed permissions
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -99,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get cursor over Google Calendar DB on client phone
+     * @return Cursor crs
+     */
     private Cursor getCursorForCalendarEvents() {
         Cursor crs = null;
         try {
@@ -115,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
         creatEventFromCalendarProvider(crs);
     }
 
+    /**
+     * Traverse whole GoogleCalendarDB
+     * @param crs
+     */
     private void creatEventFromCalendarProvider(Cursor crs) {
         Realm realm = RealmProvider.getRealm();
         crs.moveToFirst();
@@ -130,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @param crs
      * @return Event
-     * tworzy Event na podstawie  kursora po bazie danych Google Kalendarza
+     * Create event based on GoogleEvent
      */
     @NotNull
     private Event EventFromCalendarProviderProjection(Cursor crs) {
@@ -151,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @param item
      * @return
-     * Funckja wywoływana na na wybranym elemncie z menu opcji rozwijanego
+     * Handle context menu
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -169,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * @param date
-     * Zmienia date wskazywana przez kalendarz, co zmienia caly widok
+     * Change calendar date
      */
     private void changeCalendarDate(long date) {
         mCalendarView.setDate(date);
@@ -178,6 +197,9 @@ public class MainActivity extends AppCompatActivity {
         onDateChangeListener.onSelectedDayChange(mCalendarView,c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**
+     * Sets up.
+     */
     public void setUp() {
         setContentView(R.layout.activity_main);
         Realm.init(getApplicationContext());
@@ -185,17 +207,23 @@ public class MainActivity extends AppCompatActivity {
         eventDAO = EventDAO.getInstance();
     }
 
+    /**
+     * Bind events.
+     */
     public void bindEvents() {
         events.addChangeListener(realmChangeListener);
         mCalendarView.setOnDateChangeListener(onDateChangeListener);
     }
 
+    /**
+     * Init calendar view.
+     */
     public void initCalendarView() {
         mCalendarView = findViewById(R.id.calendarView);
     }
 
     /**
-     * Inicjuje widok listy wydarzeń z Wydarzeń odczytanych z bazy danych
+     * init EventListAdapter with events and render RecyclerView
      */
     public void initRecyclerViewFromEvents() {
         mAdapter = new EventListAdapter(this, events);
@@ -207,9 +235,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Wyciąga z bazy danych wydarzenia na konkretny dzień
-     * @param timestamp
-     * @return
+     * Get Eveents for particular date
+     *
+     * @param timestamp the timestamp
+     * @return events by calendar date
      */
     public RealmResults<Event> getEventsByCalendarDate(long timestamp) {
         Calendar c = Calendar.getInstance();
@@ -218,16 +247,33 @@ public class MainActivity extends AppCompatActivity {
         return eventDAO.getEventsByDateSortedByDate(realm, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**
+     * On fab click.
+     *
+     * @param view the view
+     */
     public void onFABClick(View view) {
         Intent intent = new Intent(this, AdderActivity.class);
         intent.putExtra(DATE_EXTRAS,currentCalendarDate);
         startActivity(intent);
     }
 
+    /**
+     * Gets current calendar date.
+     *
+     * @return the current calendar date
+     */
     public long getCurrentCalendarDate() {
         return currentCalendarDate;
     }
 
+    /**
+     * Sets current calendar date.
+     *
+     * @param year  the year
+     * @param month the month
+     * @param day   the day
+     */
     public void setCurrentCalendarDate(int year,int month,int day) {
         this.currentCalendarDate = DateFormatter.getDateFromYYMMDD(year, month, day).getTime();
     }

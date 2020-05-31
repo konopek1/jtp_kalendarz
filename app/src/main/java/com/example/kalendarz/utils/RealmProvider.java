@@ -4,7 +4,7 @@ import com.example.kalendarz.R;
 import io.realm.*;
 
 /**
- * Klasa odpowiedzialna za zarządzanie konfiguracja bazy danych
+ * Helper Class helping to always return Realm with same configuration
  */
 public  class RealmProvider {
     private final static RealmConfiguration config = new RealmConfiguration
@@ -17,6 +17,11 @@ public  class RealmProvider {
 
     }
 
+    /**
+     * Gets realm.
+     *
+     * @return the realm
+     */
     public static Realm getRealm() {
         return Realm.getInstance(config);
     }

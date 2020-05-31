@@ -16,43 +16,36 @@ import com.example.kalendarz.exceptions.PermissionDeniedException;
  */
 public class CalendarApi {
 
+    /**
+     * The constant EVENTS_DSTART_INDEX.
+     */
     public static final int EVENTS_DSTART_INDEX = 0;
+    /**
+     * The constant EVENTS_TITLE_INDEX.
+     */
     public static final int EVENTS_TITLE_INDEX = 1;
+    /**
+     * The constant EVENTS_DEND_INDEX.
+     */
     public static final int EVENTS_DEND_INDEX = 2;
+    /**
+     * The constant EVENTS_ISTODO_INDEX.
+     */
     public static final int EVENTS_ISTODO_INDEX = 3;
 
+    /**
+     * The constant CALENDAR_PERMISSION_CODE.
+     */
     public static final int CALENDAR_PERMISSION_CODE = 0;
 
 
     /**
-     * Metoda zwraca kursor po bazie daych Google Kalendarza
-     * @param ctx
-     * @return
-     * @throws PermissionDeniedException
+     * Returns cursor for events
+     *
+     * @param ctx the ctx
+     * @return the cursor for events
+     * @throws PermissionDeniedException the permission denied exception
      */
-    @SuppressLint("MissingPermission")
-    public static Cursor getCursorForCalendars(Context ctx) throws PermissionDeniedException {
-        if(!checkForPermission(ctx)) {
-            throw new PermissionDeniedException("Calendar");
-        }
-        Cursor cur = null;
-        Uri uri = CalendarContract.Calendars.CONTENT_URI;
-        String[] projection =
-                new String[]{
-                        CalendarContract.Calendars._ID,
-                        CalendarContract.Calendars.NAME,
-                        CalendarContract.Calendars.ACCOUNT_NAME,
-                        CalendarContract.Calendars.ACCOUNT_TYPE};
-        cur = ctx.getContentResolver()
-                        .query(CalendarContract.Calendars.CONTENT_URI,
-                                projection,
-                                CalendarContract.Calendars.VISIBLE + " = 1",
-                                null,
-                                CalendarContract.Calendars._ID + " ASC");
-
-        return cur;
-    }
-
     @SuppressLint("MissingPermission")
     public static Cursor getCursorForEvents(Context ctx) throws PermissionDeniedException {
         if(!checkForPermission(ctx)) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="@dimen/widget_margin">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:id="@+id/buttonContainerWidget"
+        >
+            <Button
+                    android:text="@string/add_new_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/widgetAddNewEventButton"
+            />
+            <Button
+                    android:text="Refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/widgetRefreshButton"
+            />
+        </LinearLayout>
+        <ListView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/buttonContainerWidget"
+                  android:layout_alignParentLeft="true"
+                  android:id="@+id/widgetListView"/>
+    </RelativeLayout>
+</FrameLayout>

@@ -9,24 +9,27 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.kalendarz.R;
 import com.example.kalendarz.activites.AdderActivity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
 /**
- * Fragment do wyboru daty pojawia sięw momencie kiedy chcemy wybrac jakąś datę
+ * Fragment for picking date
  */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private long date;
 
+    /**
+     * Instantiates a new Date picker fragment.
+     *
+     * @param date the date
+     */
     public DatePickerFragment(long date) {
         this.date = date;
     }

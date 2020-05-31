@@ -4,4 +4,5 @@
     <dimen name="small_margin">12dp</dimen>
     <dimen name="small_padding">12dp</dimen>
     <dimen name="tabbed_pading">72dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

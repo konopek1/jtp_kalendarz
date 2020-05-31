@@ -1,16 +1,17 @@
 package com.example.kalendarz.DAO;
 
-import android.widget.Toast;
 import com.example.kalendarz.common.Event;
 import com.example.kalendarz.utils.DateFormatter;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import io.realm.exceptions.RealmException;
 import io.realm.exceptions.RealmPrimaryKeyConstraintException;
 
 import java.util.Date;
 
+/**
+ * The type Event dao.
+ */
 public class EventDAO {
 
     private static EventDAO instance;
@@ -18,6 +19,11 @@ public class EventDAO {
     private EventDAO() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static EventDAO getInstance() {
         if(instance == null) {
             instance = new EventDAO();
@@ -26,6 +32,12 @@ public class EventDAO {
         return instance;
     }
 
+    /**
+     * Save.
+     *
+     * @param realm the realm
+     * @param event the event
+     */
     public  void  save(Realm realm,Event event) {
         realm.beginTransaction();
         try {
@@ -38,18 +50,25 @@ public class EventDAO {
         realm.commitTransaction();
     }
 
+    /**
+     * Gets all events.
+     *
+     * @param realm the realm
+     * @return the all events
+     */
     public  RealmResults<Event> getAllEvents(Realm realm) {
         RealmQuery<Event> query = realm.where(Event.class);
         return query.findAll();
     }
 
     /**
-     * @param realm
-     * @param year
-     * @param month
-     * @param day
-     * @return RealmResults<Event>
-     * Zwraca Eventy posortowane Datą na przestrzeni jakiegoś czasu
+     * Gets events by date sorted by date.
+     *
+     * @param realm the realm
+     * @param year  the year
+     * @param month the month
+     * @param day   the day
+     * @return RealmResults Return events sorted by date
      */
     public RealmResults<Event> getEventsByDateSortedByDate(Realm realm, int year, int month, int day) {
         Date startOfDay = DateFormatter.getDateFromYYMMDD(year, month, day);

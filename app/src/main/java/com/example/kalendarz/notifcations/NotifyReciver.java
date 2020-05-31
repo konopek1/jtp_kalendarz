@@ -13,12 +13,14 @@ import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import com.example.kalendarz.R;
 import com.example.kalendarz.activites.MainActivity;
-import com.example.kalendarz.notifcations.NotificationCreator;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.kalendarz.notifcations.NotificationCreator.PRIMARY_CHANNEL_ID;
 import static com.example.kalendarz.notifcations.NotificationCreator.notifyIntnetId;
 
+/**
+ * The type Notify reciver.
+ */
 public class NotifyReciver extends BroadcastReceiver {
 
     private NotificationManager mNotifyManager;
@@ -32,7 +34,7 @@ public class NotifyReciver extends BroadcastReceiver {
     /**
      * @param intentBundle
      * @param ctx
-     * Wyswietlenie powiadomienia, funkcja ta jest wywoływana prez AlarmManagera
+     * Function called by AlarmManger  when notification should be deliverd
      */
     private void deliverNotification(Bundle intentBundle, Context ctx) {
         int id = intentBundle.getInt(NotificationCreator.NOTIFICATION_ID_EXTRAS);
@@ -51,7 +53,7 @@ public class NotifyReciver extends BroadcastReceiver {
 
     /**
      * @param notificationManager
-     * Stworzenie Kanału Powiadomień, taki Kanał musi istnieć aby nasza aplikacja mogłą wysyłać powiadomienia
+     * Creates notification Channel need for grouping Notifications in groups
      */
     private void createNotificationChannel(NotificationManager notificationManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -66,7 +68,7 @@ public class NotifyReciver extends BroadcastReceiver {
     }
 
     /**
-     * Zwraca podstwowy styl w jakim będzie wyświetlana aplikacja, wzorzec Fabryki
+     * Create basic style of notification
      * @param ctx
      * @param title
      * @param text

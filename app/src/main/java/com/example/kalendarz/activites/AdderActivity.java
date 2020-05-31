@@ -19,9 +19,10 @@ import io.realm.exceptions.RealmException;
 import io.realm.exceptions.RealmPrimaryKeyConstraintException;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
- * Aktywność odpowiadająca za dodanie nowych wydarzeń
+ * Acitivity responsible for adding new Event
  */
 public class AdderActivity extends AppCompatActivity {
 
@@ -53,28 +54,32 @@ public class AdderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extras = getIntent().getExtras();
         setUp();
         initViews();
     }
 
     private void setUp() {
+        Realm.init(getApplicationContext());
+        long date = extras.getLong(MainActivity.DATE_EXTRAS);
         realm = RealmProvider.getRealm();
-        extras = getIntent().getExtras();
         setContentView(R.layout.activity_adder);
         startDate = Calendar.getInstance();
-        startDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
+        startDate.setTimeInMillis(date);
         startDate.set(Calendar.MINUTE,1);
         endDate = Calendar.getInstance();
-        endDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
+        endDate.setTimeInMillis(date);
         endDate.set(Calendar.MINUTE,1);
         notifyDate = Calendar.getInstance();
-        notifyDate.setTimeInMillis(extras.getLong(MainActivity.DATE_EXTRAS));
+        notifyDate.setTimeInMillis(date);
         endDate.set(Calendar.MINUTE,1);
         eventDAO = EventDAO.getInstance();
     }
 
     /**
-     * @param view
+     * On radio notify button clicked.
+     *
+     * @param view the view
      */
     public void onRadioNotifyButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
@@ -95,18 +100,35 @@ public class AdderActivity extends AppCompatActivity {
         realm.close();
     }
 
+    /**
+     * Choose date.
+     * Starts DatePickerFragment
+     * @param view the view
+     */
     public void chooseDate(View view) {
         dataPickerFor = view.getId();
         DialogFragment newFragment = new DatePickerFragment(extras.getLong(MainActivity.DATE_EXTRAS));
         newFragment.show(getSupportFragmentManager(), getString(R.string.datePicker));
     }
 
+    /**
+     * Choose time.
+     * Start TimePickerFragment
+     * @param view the view
+     */
     public void chooseTime(View view) {
         timePickerFor = view.getId();
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), getString(R.string.timePicker));
     }
 
+    /**
+     * Proccess data picker result.
+     *
+     * @param year  the year
+     * @param month the month
+     * @param day   the day
+     */
     public void proccessDataPickerResult(int year, int month, int day) {
         switch (dataPickerFor) {
             case R.id.activity_add_date_textView:
@@ -129,6 +151,12 @@ public class AdderActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Proccess time picker result.
+     *
+     * @param hourOfDay the hour of day
+     * @param minute    the minute
+     */
     public void proccessTimePickerResult(int hourOfDay, int minute) {
         switch (timePickerFor) {
             case R.id.date_from:
@@ -151,6 +179,9 @@ public class AdderActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initi views used by this Activity
+     */
     public void initViews() {
 
         mNotifyView = findViewById(R.id.notify_date_layout);
@@ -171,12 +202,22 @@ public class AdderActivity extends AppCompatActivity {
         mNotifyTime = findViewById(R.id.activity_add_time_notify);
     }
 
+    /**
+     * Init date generic view.
+     *
+     * @param view the view
+     */
     public void initDateGenericView(TextView view) {
         long timestampFromIntent = extras.getLong(MainActivity.DATE_EXTRAS);
         view.setText(DateFormatter.formatDateDDMMYYYY(timestampFromIntent));
     }
 
 
+    /**
+     * On create button click.
+     *
+     * @param view the view
+     */
     public void onCreateButtonClick(View view) {
         if (!validate()) return;
         createEventFromForm();

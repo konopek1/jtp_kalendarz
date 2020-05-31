@@ -3,7 +3,7 @@ package com.example.kalendarz.utils;
 import android.widget.TextView;
 
 /**
- * Klasa Validująca
+ * Helper CLass for validation
  */
 public class Validator {
     private static final String ERROR_MESSAGE_EMPTY = "Can't be empty";
@@ -12,12 +12,11 @@ public class Validator {
     }
 
     /**
-     * @param message
-     * @param l
-     * @param args
-     * @return
-     * Przyjmuję lambde, która jest wywoływana na przyjętych argumntach ..args
-     * jeśli zwróci fałsz , przypisywana jest jej errorMessage(setError)
+     * Validate text view s with @TextViewValidatorLambda l Lambda
+     * @param message the message
+     * @param l       the l
+     * @param args    the args
+     * @return true if all args are valid
      */
     public static boolean validateTextView(String message, TextViewValidatorLambda l, TextView ...args) {
         boolean isValid = true;

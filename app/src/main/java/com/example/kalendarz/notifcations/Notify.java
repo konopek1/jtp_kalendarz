@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Klasa reprezentująca powiadomienie
+ * Notify object stored in DB
  */
 public class Notify extends RealmObject {
     @PrimaryKey
@@ -14,16 +14,19 @@ public class Notify extends RealmObject {
     private String title;
     private String text;
 
+    /**
+     * Instantiates a new Notify.
+     */
     public Notify() {
     }
 
     /**
-     * W momencie tworzenia powiadomienie zostaję również  dodane powiadomienia do AlarmMenegera
-     * któy odpala je w odpowiednim czasie
-     * @param ctx
-     * @param when
-     * @param title
-     * @param text
+     *When Event is created also Notification is created and send to AlaramManager
+     *
+     * @param ctx   the ctx
+     * @param when  the when
+     * @param title the title
+     * @param text  the text
      */
     public Notify(Context ctx, long when, String title, String text) {
         this.id = generateId(when);

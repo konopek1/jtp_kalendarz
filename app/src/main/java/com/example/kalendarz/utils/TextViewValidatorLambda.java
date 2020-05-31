@@ -3,13 +3,15 @@ package com.example.kalendarz.utils;
 import android.widget.TextView;
 
 /**
- * Interfejs dla wyrażenia lambda odpowiadającego za validacje danych
+ * Lambda interface for Input Validation on TextViews
  */
 public interface TextViewValidatorLambda {
 
     /**
-     * @param contentInput Validowany element
-     * @return Zwraca prawdę jesli wynik validacji jest pozytywny
+     *
+     *
+     * @param contentInput element
+     * @return Should return true if element is valid
      */
     boolean call(TextView contentInput);
 }

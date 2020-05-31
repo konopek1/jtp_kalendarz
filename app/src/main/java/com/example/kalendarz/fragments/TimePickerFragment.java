@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment;
 import com.example.kalendarz.activites.AdderActivity;
 
 import java.util.Calendar;
+
 /**
- * Fragment do wyboru daty pojawia się w momencie kiedy chcemy wybrac jakiś czas
+ * Fragment for picking Time
  */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     @NonNull
